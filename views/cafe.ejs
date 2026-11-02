@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>카페 메뉴 관리</title>
+</head>
+<body>
+
+  <h1>카페 메뉴 관리</h1>
+
+  <h2>1. 메뉴 추가</h2>
+
+  <form action="/menus/add" method="POST">
+    메뉴명:
+    <input type="text" name="menu" maxlength="100" required>
+
+    가격:
+    <input type="number" name="price" min="0" required>
+
+    수량:
+    <input type="number" name="quantity" min="0" required>
+
+    <button type="submit">추가</button>
+  </form>
+
+  <hr>
+
+  <h2>2. ID 상세 조회</h2>
+
+  <form id="searchForm">
+    ID:
+    <input type="number" id="searchId" min="1" required>
+    <button type="submit">조회</button>
+  </form>
+
+  <script>
+    document.getElementById("searchForm").addEventListener(
+      "submit",
+      function(event) {
+        event.preventDefault();
+
+        const id = document.getElementById("searchId").value;
+        window.location.href = "/menus/" + encodeURIComponent(id);
+      }
+    );
+  </script>
+
+  <% if (selected) { %>
+    <h3>상세 조회 결과</h3>
+    <p>ID: <%= selected.id %></p>
+    <p>메뉴명: <%= selected.menu %></p>
+    <p>가격: <%= selected.price %>원</p>
+    <p>수량: <%= selected.quantity %></p>
+  <% } %>
+
+  <hr>
+
+  <h2>3. 메뉴 수정</h2>
+
+  <form action="/menus/edit" method="POST">
+    ID:
+    <input type="number" name="id" min="1" required>
+
+    메뉴명:
+    <input type="text" name="menu" maxlength="100" required>
+
+    가격:
+    <input type="number" name="price" min="0" required>
+
+    수량:
+    <input type="number" name="quantity" min="0" required>
+
+    <button type="submit">수정</button>
+  </form>
+
+  <hr>
+
+  <h2>4. 메뉴 삭제</h2>
+
+  <form action="/menus/delete"
+        method="POST"
+        onsubmit="return confirm('정말 삭제하시겠습니까?')">
+
+    ID:
+    <input type="number" name="id" min="1" required>
+
+    <button type="submit">삭제</button>
+  </form>
+
+  <hr>
+
+  <h2>5. 전체 메뉴 조회</h2>
+
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>메뉴명</th>
+      <th>가격</th>
+      <th>수량</th>
+    </tr>
+
+    <% menus.forEach(function(item) { %>
+      <tr>
+        <td><%= item.id %></td>
+        <td><%= item.menu %></td>
+        <td><%= item.price %></td>
+        <td><%= item.quantity %></td>
+      </tr>
+    <% }); %>
+  </table>
+
+  <p><a href="/">전체 목록 새로고침</a></p>
+
+</body>
+</html>
+
